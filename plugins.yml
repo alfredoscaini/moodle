@@ -1,0 +1,5 @@
+services:
+  
+   moodle:
+    volumes:
+      - ./src:/opt/bitnami/moodle/local

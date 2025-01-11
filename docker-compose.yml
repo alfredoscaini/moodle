@@ -1,0 +1,36 @@
+services:
+
+  moodle_db:
+    build:
+      context: .
+      dockerfile: ./local/dockerfile.mariadb
+    container_name: moodle_db
+    ports: 
+      - 3306:3306
+    env_file:
+      - ./local/.env 
+
+  moodle:
+    build:
+      context: .
+      dockerfile: ./local/dockerfile.moodle
+    container_name: moodle
+    env_file:
+      - ./local/.env
+    ports:
+      - '9000:8080'
+      - '9443:443'
+    volumes:
+      - moodle_data:/bitnami/moodle 
+      - moodledata_data:/bitnami/moodledata
+    depends_on:
+      - moodle_db
+
+networks:
+  moodle-net:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+  moodle_data:
+  moodledata_data:
